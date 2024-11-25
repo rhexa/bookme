@@ -1,12 +1,14 @@
+import { Container } from '@mui/material'
+import Header from './components/Header'
 import Routes from './routes/Routes'
-import bookmeLogo from '/bookme.svg'
 
 function App() {
   return (
     <>
-      <h1>Welcome to Bookme</h1>
-      <img src={bookmeLogo} alt="Bookme logo" />
-      <Routes />
+      <Header />
+      <Container>
+        <Routes />
+      </Container>
     </>
   )
 }

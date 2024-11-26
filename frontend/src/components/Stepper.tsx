@@ -1,4 +1,9 @@
-import { Step, StepLabel, Stepper as MUIStepper } from '@mui/material'
+import {
+  Step,
+  StepLabel,
+  Stepper as MUIStepper,
+  Typography,
+} from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../types/store'
 
@@ -10,10 +15,14 @@ const Stepper = () => {
     { label: 'Fill in the details' },
   ]
   return (
-    <MUIStepper activeStep={step}>
+    <MUIStepper sx={{ mt: 4 }} activeStep={step} alternativeLabel>
       {steps.map((step, index) => (
         <Step key={index}>
-          <StepLabel>{step.label}</StepLabel>
+          <StepLabel>
+            <Typography variant="h5" component="h2">
+              {step.label}
+            </Typography>
+          </StepLabel>
         </Step>
       ))}
     </MUIStepper>

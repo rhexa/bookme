@@ -1,15 +1,21 @@
 import express from 'express'
+import 'reflect-metadata' // required for typeorm
+import { connectDB } from './utils/datasource'
+import { PORT } from './utils/config'
 
-const app = express()
-app.use(express.json())
+const main = async () => {
+  await connectDB()
+  const app = express()
+  app.use(express.json())
 
-const PORT = 3000
+  app.get('/ping', (_req, res) => {
+    console.log('someone pinged here')
+    res.send('pong')
+  })
 
-app.get('/ping', (_req, res) => {
-  console.log('someone pinged here')
-  res.send('pong')
-})
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+}
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+void main()

@@ -4,11 +4,14 @@ import { connectDB } from './utils/datasource'
 import { PORT } from './utils/config'
 import { Service } from './entity/Service'
 import { Category } from './entity/Category'
+import route from './route'
 
 const main = async () => {
   await connectDB()
   const app = express()
   app.use(express.json())
+
+  app.use('/api', route)
 
   app.get('/test', async (_req, res) => {
     try {

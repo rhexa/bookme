@@ -22,4 +22,15 @@ export class Service extends BaseEntity {
     cascade: true,
   })
   category: Category
+
+  public toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      price: this.price,
+      category: {
+        name: this.category.name,
+      },
+    }
+  }
 }

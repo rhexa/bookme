@@ -1,0 +1,50 @@
+@URL = http://localhost:3000
+@serviceUrl = {{URL}}/api/services
+
+###
+# Get all
+GET {{serviceUrl}}
+
+###
+# Get by id
+GET {{serviceUrl}}/1
+
+###
+# Add
+POST {{serviceUrl}}
+Content-Type: application/json
+
+{
+  "name": "Sport massage 1 hour",
+  "price": 65,
+  "category": {
+    "name": "massage"
+  }
+}
+
+###
+# Update
+PUT {{serviceUrl}}/2
+Content-Type: application/json
+
+{
+  "price": 65
+}
+
+###
+# Delete
+DELETE {{serviceUrl}}/3
+
+###############################################
+#### Test ####
+
+###
+# Add with wrong format
+POST {{serviceUrl}}
+Content-Type: application/json
+
+{
+  "name": "Sport massage 1 hour",
+  "price": 65,
+  "category": "massage"
+}

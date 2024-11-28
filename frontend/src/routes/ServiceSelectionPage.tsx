@@ -11,33 +11,21 @@ import {
 } from '@mui/material'
 import { ArrowDropDown } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../hooks/redux'
 import { useNavigate } from 'react-router-dom'
 import { _setStep } from '../reducers/step'
-import { faker } from '@faker-js/faker'
-import { Service } from '../types'
+import { useSelector } from 'react-redux'
+import { RootState } from '../types/store'
+import { initializeServices } from '../reducers/services'
+import { initializeCategories } from '../reducers/categories'
 
 const ServiceSelectionPage = () => {
-  const dispatch = useDispatch()
-  const [services, setServices] = useState<Service[]>([])
   const [selectedService, setSelectedService] = useState('')
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  const serviceGroups = [
-    'chiropractic',
-    'physiotherapy',
-    'massage',
-    'osteopathy',
-  ]
-
-  const createRandomService = () => {
-    return {
-      id: faker.string.uuid(),
-      group: serviceGroups[Math.floor(Math.random() * serviceGroups.length)],
-      name: faker.lorem.words(3),
-      price: faker.commerce.price({ dec: 0 }),
-    }
-  }
+  const services = useSelector((state: RootState) => state.services)
+  const categories = useSelector((state: RootState) => state.categories)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedService(event.target.value)
@@ -50,21 +38,23 @@ const ServiceSelectionPage = () => {
   }
 
   useEffect(() => {
+    console.log('rendered')
     dispatch(_setStep(0))
-    setServices(faker.helpers.multiple(createRandomService, { count: 10 }))
+    dispatch(initializeServices())
+    dispatch(initializeCategories())
   }, [])
 
   return (
     <Box sx={{ my: 4 }}>
-      {serviceGroups.map((group) => {
+      {categories.map((category) => {
         const servicesInGroup = services.filter(
-          (service) => service.group === group
+          (service) => service.category.name === category.name
         )
         return servicesInGroup.length > 0 ? (
-          <Accordion key={group}>
+          <Accordion key={category.id}>
             <AccordionSummary expandIcon={<ArrowDropDown />}>
               <Typography variant="h6" component="h3">
-                {group}
+                {category.name}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>

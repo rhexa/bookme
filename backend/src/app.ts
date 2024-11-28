@@ -1,15 +1,17 @@
-import express from 'express'
+import express, { Request } from 'express'
 import 'reflect-metadata' // required for typeorm
 import { connectDB } from './utils/datasource'
 import { PORT } from './utils/config'
 import { Service } from './entity/Service'
 import { Category } from './entity/Category'
+import cors from 'cors'
 import route from './route'
 
 const main = async () => {
   await connectDB()
   const app = express()
   app.use(express.json())
+  app.use(cors<Request>())
 
   app.use('/api', route)
 

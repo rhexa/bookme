@@ -1,0 +1,10 @@
+@URL = http://localhost:3000
+@categoryUrl = {{URL}}/api/categories
+
+###
+# Get all with services
+GET {{categoryUrl}}?full=true
+
+###
+# Get all without services
+GET {{categoryUrl}}

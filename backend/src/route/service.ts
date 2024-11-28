@@ -102,7 +102,7 @@ router.put('/:id', async (req, res) => {
 
     const updatedService = await serviceToBeUpdated.save()
 
-    res.send(updatedService.toJSON())
+    res.send(updatedService.scoped('user'))
   } catch (error) {
     if (error instanceof QueryFailedError) {
       console.error(error)

@@ -23,14 +23,20 @@ export class Service extends BaseEntity {
   })
   category: Category
 
-  public toJSON() {
-    return {
-      id: this.id,
-      name: this.name,
-      price: this.price,
-      category: {
-        name: this.category.name,
-      },
+  public scoped(scope: string) {
+    switch (scope) {
+      case 'admin':
+        return this
+
+      default:
+        return {
+          id: this.id,
+          name: this.name,
+          price: this.price,
+          category: {
+            name: this.category.name,
+          },
+        }
     }
   }
 }

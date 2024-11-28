@@ -2,19 +2,7 @@ import 'dotenv/config'
 
 export const PORT = process.env.PORT || 3000
 
-const get_DB_TYPE = () => {
-  switch (process.env.DB_TYPE) {
-    case 'postgres':
-      return 'postgres'
-    case 'mysql':
-      return 'mysql'
-    default:
-      return 'postgres'
-  }
-}
-
-export const DB_TYPE = get_DB_TYPE()
-
+export const DB_TYPE = process.env.DB_TYPE
 export const DB_HOST = process.env.DB_HOST || 'localhost'
 export const DB_PORT = process.env.DB_PORT
   ? parseInt(process.env.DB_PORT)

@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm'
+import { DataSource, DataSourceOptions } from 'typeorm'
 import {
   DB_DATABASE,
   DB_HOST,
@@ -8,14 +8,32 @@ import {
   DB_USER,
 } from './config'
 
-export const AppDataSource = new DataSource({
-  type: DB_TYPE,
-  host: DB_HOST,
-  port: DB_PORT,
-  username: DB_USER,
-  password: DB_PASSWORD,
-  database: DB_DATABASE,
-})
+const initDataSourceOptions = (): DataSourceOptions => {
+  switch (DB_TYPE) {
+    case 'mysql':
+      return {
+        type: 'mysql',
+        host: DB_HOST,
+        port: DB_PORT,
+        username: DB_USER,
+        password: DB_PASSWORD,
+        database: DB_DATABASE,
+      }
+    default:
+      return {
+        type: 'postgres',
+        host: DB_HOST,
+        port: DB_PORT,
+        username: DB_USER,
+        password: DB_PASSWORD,
+        database: DB_DATABASE,
+        entities: ['src/entity/**/*.ts'],
+        migrations: ['src/migration/**/*.ts'],
+      }
+  }
+}
+
+export const AppDataSource = new DataSource(initDataSourceOptions())
 
 export const connectDB = async () => {
   try {

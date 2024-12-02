@@ -66,7 +66,6 @@ const TimeSelectionPage = () => {
   return (
     <div>
       <h1>Time Selection Page</h1>
-      <p>Service ID: {serviceId}</p>
       <ScheduleMeeting
         availableTimeslots={updatedTimeslots}
         eventDurationInMinutes={interval}

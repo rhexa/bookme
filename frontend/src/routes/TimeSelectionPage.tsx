@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import { _setStep } from '../reducers/step'
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { ScheduleMeeting } from 'react-schedule-meeting'
 
 const TimeSelectionPage = () => {
@@ -71,15 +71,20 @@ const TimeSelectionPage = () => {
         eventDurationInMinutes={interval}
         onStartTimeSelect={({ startTime }) => setSelectedTime(startTime)}
       />
-      {selectedTime ? (
-        <Link to={`/${serviceId}/book?date=${selectedTime.toString()}`}>
-          <Button variant="contained">Fill in the details</Button>
-        </Link>
-      ) : (
-        <Button variant="contained" disabled>
-          Fill in the details
-        </Button>
-      )}
+
+      <Box sx={{ mt: 2, mx: 1.5 }}>
+        {selectedTime ? (
+          <Link to={`/${serviceId}/book?date=${selectedTime.toString()}`}>
+            <Button variant="contained" fullWidth>
+              Fill in the details
+            </Button>
+          </Link>
+        ) : (
+          <Button variant="contained" fullWidth disabled>
+            Fill in the details
+          </Button>
+        )}
+      </Box>
     </div>
   )
 }

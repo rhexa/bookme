@@ -174,12 +174,29 @@ router.post('/:id/book', async (req, res) => {
     text: emailText,
   }
 
+  const costumerEmailText = `
+    Dear ${emailData.name},
+
+    Thank you for your reservation for ${emailData.service.name} at ${emailData.selectedTime}.
+
+    Best regards,
+
+    Kirana Wellbeing
+  `
+  const costumerMailOptions = {
+    from: `Kirana Wellbeing <${BOOKING_EMAIL}>`,
+    to: emailData.email,
+    subject: `Your reservation for ${service.name} at ${formData.selectedTime} has been confirmed`,
+    text: costumerEmailText,
+  }
+
   try {
-    await emailTransporter.sendMail(mailOptions)
-    res.send(`Email sent successfully`)
+    await emailTransporter.sendMail(mailOptions) // Send email to admin
+    await emailTransporter.sendMail(costumerMailOptions) // Send confirmation email to costumer
+    res.send(`Reservation has been made successfully`)
   } catch (error) {
     console.error(error)
-    res.status(500).send(`Error sending email: ${error}`)
+    res.status(500).send(`Error when creating a new reservation: ${error}`)
   }
 })
 

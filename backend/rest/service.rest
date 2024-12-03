@@ -35,6 +35,18 @@ Content-Type: application/json
 # Delete
 DELETE {{serviceUrl}}/3
 
+###
+# Book a service
+POST {{serviceUrl}}/199/book
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "{{$dotenv TEST_SENDER_EMAIL}}",
+  "mobile": "1234567890",
+  "selectedTime": "Tue Dec 03 2024 09:00:00 GMT 0200 (Eastern European Standard Time)"
+}
+
 ###############################################
 #### Test ####
 

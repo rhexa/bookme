@@ -1,4 +1,22 @@
 import 'dotenv/config'
+import nodemailer from 'nodemailer'
+import { emailConfigSchema } from './types'
+
+export const BOOKING_EMAIL = process.env.BOOKING_EMAIL
+
+export const emailConfig = emailConfigSchema.parse({
+  host: process.env.EMAIL_SMTP_HOSTNAME,
+  port: process.env.EMAIL_SMTP_PORT
+    ? parseInt(process.env.EMAIL_SMTP_PORT)
+    : 587,
+  secure: process.env.EMAIL_SMTP_SECURE === 'true',
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+})
+
+export const emailTransporter = nodemailer.createTransport(emailConfig)
 
 export const PORT = process.env.PORT || 3000
 

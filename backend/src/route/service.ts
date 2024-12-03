@@ -1,6 +1,8 @@
 import express from 'express'
 import { Service } from '../entity/Service'
 import { QueryFailedError } from 'typeorm'
+import { clientFormDataSchema } from '../utils/types'
+import { BOOKING_EMAIL, emailTransporter } from '../utils/config'
 const router = express.Router()
 
 router.get('/', async (_req, res) => {
@@ -120,6 +122,64 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(500).end()
+  }
+})
+
+// Booking
+router.post('/:id/book', async (req, res) => {
+  const serviceId = parseInt(req.params.id)
+  const formData = clientFormDataSchema.parse(req.body)
+
+  // Fetch service with corresponding serviceId
+  const service = await Service.findOne({
+    where: { id: serviceId },
+    relations: {
+      category: true,
+    },
+  })
+
+  if (!service) {
+    res.status(404).send('Service not found')
+    return
+  }
+
+  // Prepare email data
+  const emailData = {
+    name: formData.name,
+    email: formData.email,
+    mobile: formData.mobile,
+    service: {
+      name: service.name,
+      price: service.price,
+      category: service.category.name,
+    },
+    selectedTime: formData.selectedTime,
+  }
+
+  // Send email to admin
+  const emailText = `
+    New reservation has been made:
+
+    Name: ${emailData.name}
+    Email: ${emailData.email}
+    Mobile: ${emailData.mobile}
+    Service: ${emailData.service.name} (${emailData.service.price})
+    Category: ${emailData.service.category}
+    Selected Time: ${emailData.selectedTime}
+  `
+  const mailOptions = {
+    from: `${emailData.name} ${emailData.email}`,
+    to: BOOKING_EMAIL,
+    subject: `You have a new reservation - ${service.name} for ${formData.selectedTime}`,
+    text: emailText,
+  }
+
+  try {
+    await emailTransporter.sendMail(mailOptions)
+    res.send(`Email sent successfully`)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(`Error sending email: ${error}`)
   }
 })
 

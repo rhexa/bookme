@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { _setStep } from '../reducers/step'
 import { Box, Button, TextField } from '@mui/material'
 import { bookService } from '../services/service'
+import { _setBooking } from '../reducers/booking'
 
 const ClientFormPage = () => {
   const [formValues, setFormValues] = useState({
@@ -78,17 +79,19 @@ const ClientFormPage = () => {
 
     if (!(serviceId && date)) return
 
-    const response = await bookService({
+    const bookingData = {
       name: formValues.name.value,
       email: formValues.email.value,
       mobile: formValues.mobile.value,
       serviceId,
       selectedTime: date,
-    })
+    }
+
+    const response = await bookService(bookingData)
 
     if (response && response.status === 200) {
-      console.log('success')
-      navigate('/')
+      dispatch(_setBooking(bookingData))
+      navigate('/booking-success')
     }
   }
 

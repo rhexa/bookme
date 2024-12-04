@@ -4,7 +4,7 @@ export type Category = {
 }
 
 export type Service = {
-  id: string
+  id: number
   name: string
   price: string
   category: Category

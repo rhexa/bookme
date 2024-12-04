@@ -1,10 +1,10 @@
 import { AxiosResponse } from 'axios'
 import api from '../axios'
-import { BookingData } from '../types'
+import { BookingData, Service } from '../types'
 
 export const fetchServices = async () => {
   try {
-    const response = await api.get('/services')
+    const response = await api.get<Service[]>('/services')
     return response.data
   } catch (error) {
     console.error(error)

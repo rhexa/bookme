@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { _setStep } from '../reducers/step'
 import { Box, Button, TextField } from '@mui/material'
+import { bookService } from '../services/service'
 
 const ClientFormPage = () => {
   const [formValues, setFormValues] = useState({
@@ -25,6 +26,7 @@ const ClientFormPage = () => {
 
   const dispatch = useDispatch()
   const location = useLocation()
+  const navigate = useNavigate()
   const { serviceId } = useParams()
   const queryParams = new URLSearchParams(location.search)
   const date = queryParams.get('date')
@@ -71,22 +73,34 @@ const ClientFormPage = () => {
     }
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    console.log({
+    if (!(serviceId && date)) return
+
+    const response = await bookService({
       name: formValues.name.value,
       email: formValues.email.value,
       mobile: formValues.mobile.value,
       serviceId,
-      date,
+      selectedTime: date,
     })
-    // TODO: send form data to backend
+
+    if (response && response.status === 200) {
+      console.log('success')
+      navigate('/')
+    }
   }
 
   useEffect(() => {
     dispatch(_setStep(2))
+
+    // Redirect to home page if serviceId or date is missing
+    if (!(serviceId && date)) {
+      navigate('/')
+    }
   }, [])
+
   return (
     <Box sx={{ my: 4 }}>
       <form onSubmit={handleSubmit}>
@@ -128,6 +142,7 @@ const ClientFormPage = () => {
         />
         <Button
           disabled={
+            formValues.name.value === '' ||
             formValues.name.error ||
             formValues.email.error ||
             formValues.mobile.error

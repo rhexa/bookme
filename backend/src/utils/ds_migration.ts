@@ -30,17 +30,9 @@ const initDataSourceOptions = (): DataSourceOptions => {
         password: DB_PASSWORD,
         database: DB_DATABASE,
         entities: [Category, Service],
+        migrations: ['src/migration/**/*.ts'],
       }
   }
 }
 
 export const AppDataSource = new DataSource(initDataSourceOptions())
-
-export const connectDB = async () => {
-  try {
-    await AppDataSource.initialize()
-    console.log('DB connected')
-  } catch (error) {
-    console.log(error)
-  }
-}

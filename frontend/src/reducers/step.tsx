@@ -4,7 +4,7 @@ const stepSlice = createSlice({
   name: 'step',
   initialState: 0,
   reducers: {
-    _setStep: (state, action) => {
+    _setStep: (_state, action) => {
       return action.payload
     },
   },

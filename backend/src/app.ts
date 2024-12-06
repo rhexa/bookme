@@ -13,6 +13,7 @@ const main = async () => {
   app.use(express.json())
   app.use(cors<Request>())
 
+  app.use(express.static('dist'))
   app.use('/api', route)
 
   app.get('/test', async (_req, res) => {

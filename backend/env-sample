@@ -1,0 +1,12 @@
+DB_HOST=<database hostname or url>
+DB_PORT=<database port>
+DB_USER=<database username>
+DB_PASSWORD=<database password>
+DB_DATABASE=<database name>
+EMAIL_SMTP_HOSTNAME=<smtp hostname>
+EMAIL_SMTP_PORT=<smtp port>
+EMAIL_SMTP_SECURE=<true or false>
+EMAIL_USERNAME=<email username>
+EMAIL_PASSWORD=<email password>
+BOOKING_EMAIL=<email address to for receiving reservations>
+TEST_SENDER_EMAIL=<email address to be used for testing reservation>

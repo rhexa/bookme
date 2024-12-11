@@ -192,11 +192,16 @@ router.post('/:id/book', async (req, res) => {
 
   try {
     await emailTransporter.sendMail(mailOptions) // Send email to admin
-    await emailTransporter.sendMail(costumerMailOptions) // Send confirmation email to costumer
     res.send(`Reservation has been made successfully`)
   } catch (error) {
     console.error(error)
     res.status(500).send(`Error when creating a new reservation: ${error}`)
+  }
+
+  try {
+    await emailTransporter.sendMail(costumerMailOptions) // Send confirmation email to costumer
+  } catch (error) {
+    console.error(error)
   }
 })
 
